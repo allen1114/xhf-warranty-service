@@ -26,7 +26,7 @@
                 <rartifactId>xhf-warranty-service</rartifactId>
                 <rversion>0.0.1-SNAPSHOT</rversion>
 
-                <docker.host>https://dockerd.dev.zkztch.com:2375</docker.host>
+                <docker.host>https://docker.dev.zkztch.com:2375</docker.host>
                 <docker.certs.path>certs</docker.certs.path>
                 <docker.image.name>${project.groupId}/${project.artifactId}</docker.image.name>
                 <docker.image.tag>${project.version}</docker.image.tag>
