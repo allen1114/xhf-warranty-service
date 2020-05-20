@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+
+    options {
+        skipStagesAfterUnstable()
+        timeout(time: 1, unit: 'HOURS')
+    }
+
+    environment {
+
+        PROJECT_GROUPID = "com.zkztch.xhf"
+        PROJECT_ARTIFACTID = "xhf-warranty-service"
+
+        DOCKER_IMAGE_NAME = "${PROJECT_GROUPID}/${PROJECT_ARTIFACTID}"
+        DOCKER_CONTAINER_NAME = "${PROJECT_GROUPID}_${PROJECT_ARTIFACTID}"
+        ZKZTCH_ENV_ADDR = "env.dev.zkztch.com"
+        DOCKER_CERT_PATH = "${BRANCH_NAME}_certs"
+
+        DOCKER_CONTAINER_CONFIG = "container_config.json"
+    }
+
+    stages {
+        stage("deploy") {
+            when {
+                anyOf {
+                    branch "sit"
+                    branch "master"
+                }
+            }
+
+            steps {
+                script {
+                    def envMap = zkztchLoadEnv path: "${PROJECT_GROUPID}/${PROJECT_ARTIFACTID}/${BRANCH_NAME}"
+                    def envList = []
+                    envMap.each {
+                        envList.add(it.key + "=" + it.value)
+                    }
+                    withEnv(envList) {
+                        sh "mkdir -p ${DOCKER_CERT_PATH}"
+                        sh "echo '${DOCKER_CERT_CA}' > ${DOCKER_CERT_PATH}/ca.pem"
+                        sh "echo '${DOCKER_CERT_CERT}' > ${DOCKER_CERT_PATH}/cert.pem"
+                        sh "echo '${DOCKER_CERT_KEY}' > ${DOCKER_CERT_PATH}/key.pem"
+
+                        def tagList = dockerRepoListTags repository: "${DOCKER_IMAGE_NAME}"
+                        def tagToRun = input message: '选择要部署的版本', parameters: [choice(choices: tagList, description: '选择要部署的版本', name: 'TAG_TO_RUN')]
+                        withEnv(["DOCKER_IMAGE_TO_RUN=" + "${DOCKER_REPO_HOST}/${DOCKER_IMAGE_NAME}:" + tagToRun]) {
+                            def state = dockerState container: "${DOCKER_CONTAINER_NAME}"
+                            if (state == "running") {
+                                dockerStop container: "${DOCKER_CONTAINER_NAME}"
+                            }
+                            if (state != null) {
+                                dockerRemove container: "${DOCKER_CONTAINER_NAME}"
+                            }
+                            dockerPull image: "${DOCKER_IMAGE_TO_RUN}"
+                            dockerCreate name: "${DOCKER_CONTAINER_NAME}", config: "${DOCKER_CONTAINER_CONFIG}"
+                            dockerStart container: "${DOCKER_CONTAINER_NAME}", failWhenNotFound: true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "Image": "${DOCKER_IMAGE_TO_RUN}",
+  "ExposedPorts": {
+    "8080/tcp": {}
+  },
+  "Env": [
+    "datasource.druid.url=${DATASOURCE_DRUID_URL}",
+    "datasource.druid.username=${DATASOURCE_DRUID_USERNAME}",
+    "datasource.druid.password=${DATASOURCE_DRUID_PASSWORD}"
+  ],
+  "HostConfig": {
+    "PortBindings": {
+      "8080/tcp": [
+        {
+          "HostPort": "8005"
+        }
+      ]
+    }
+  }
+}
