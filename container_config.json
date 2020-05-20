@@ -4,9 +4,9 @@
     "8080/tcp": {}
   },
   "Env": [
-    "datasource.druid.url=${DATASOURCE_DRUID_URL}",
-    "datasource.druid.username=${DATASOURCE_DRUID_USERNAME}",
-    "datasource.druid.password=${DATASOURCE_DRUID_PASSWORD}"
+    "spring.datasource.druid.url=${DATASOURCE_DRUID_URL}",
+    "spring.datasource.druid.username=${DATASOURCE_DRUID_USERNAME}",
+    "spring.datasource.druid.password=${DATASOURCE_DRUID_PASSWORD}"
   ],
   "HostConfig": {
     "PortBindings": {
