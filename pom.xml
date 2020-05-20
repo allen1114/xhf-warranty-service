@@ -21,7 +21,7 @@
             <id>test</id>
             <properties>
                 <rgroupId>com.zkztch.xhf</rgroupId>
-                <rartifactId>warranty-service</rartifactId>
+                <rartifactId>xhf-warranty-service</rartifactId>
                 <rversion>0.0.1-SNAPSHOT</rversion>
 
                 <docker.host>https://dockerd.dev.zkztch.com:2375</docker.host>
