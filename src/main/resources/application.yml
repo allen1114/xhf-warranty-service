@@ -14,8 +14,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-#  datasource:
-#    druid:
-#      url: jdbc:mysql://192.168.1.130:3306/fota-simple?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE
-#      username: root
-#      password: root
+  datasource:
+    druid:
+      url: jdbc:mysql://db.sit.zkztch.com:3301/xhf-warranty-service?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE
+      username: root
+      password: root.sit.zkztch
