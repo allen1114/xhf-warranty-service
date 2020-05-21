@@ -11,7 +11,9 @@
   ],
   "NetworkingConfig": {
     "EndpointsConfig": {
-      "zkztch_network": {}
+      "zkztch_network": {
+        "IPAMConfig": null
+      }
     }
   }
 }
