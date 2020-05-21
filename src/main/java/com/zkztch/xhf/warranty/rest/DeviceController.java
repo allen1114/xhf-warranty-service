@@ -1,14 +1,21 @@
 package com.zkztch.xhf.warranty.rest;
 
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.zkztch.xhf.warranty.domain.Device;
+import com.zkztch.xhf.warranty.service.DeviceService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("device")
 public class DeviceController {
 
-    @RequestMapping
-    public String hello() {
-        return "hello";
+    private DeviceService deviceService;
+
+    public DeviceController(DeviceService deviceService) {
+        this.deviceService = deviceService;
+    }
+
+    @PostMapping("register")
+    public Device register(@RequestBody Device device) {
+        return deviceService.register(device);
     }
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    imei
+    <span th:value="${device.imei}"></span>
+</div>
+<div>
+    sn
+    <span th:value="${device.sn}"></span>
+</div>
+<div>
+    注册日期：
+    <span th:value="${#dates.format(device.registerTime,'yyyy年MM月dd日')}"></span>
+</div>
+
+<div>
+    保修日期：
+    <span th:value="${#dates.format(device.warrantyPeriod,'yyyy年MM月dd日')}"></span>
+</div>
+</body>
+</html>
