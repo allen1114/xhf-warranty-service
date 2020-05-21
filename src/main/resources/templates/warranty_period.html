@@ -7,20 +7,20 @@
 <body>
 <div>
     imei
-    <span th:value="${device.imei}"></span>
+    <span th:text="${device.imei}"></span>
 </div>
 <div>
     sn
-    <span th:value="${device.sn}"></span>
+    <span th:text="${device.sn}"></span>
 </div>
 <div>
     注册日期：
-    <span th:value="${#dates.format(device.registerTime,'yyyy年MM月dd日')}"></span>
+    <span th:text="${#dates.format(device.registerTime,'yyyy年MM月dd日')}"></span>
 </div>
 
 <div>
     保修日期：
-    <span th:value="${#dates.format(device.warrantyPeriod,'yyyy年MM月dd日')}"></span>
+    <span th:text="${#dates.format(device.warrantyPeriod,'yyyy年MM月dd日')}"></span>
 </div>
 </body>
 </html>
