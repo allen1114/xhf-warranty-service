@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
     <title>Title</title>
 </head>
-<body>
-<div>
-    imei
-    <span th:text="${device.imei}"></span>
-</div>
-<div>
-    sn
-    <span th:text="${device.sn}"></span>
-</div>
-<div>
-    注册日期：
-    <span th:text="${#dates.format(device.registerTime,'yyyy年MM月dd日')}"></span>
-</div>
 
-<div>
-    保修日期：
-    <span th:text="${#dates.format(device.warrantyPeriod,'yyyy年MM月dd日')}"></span>
-</div>
-
-<a href="/warranty">确定</a>
+<body class="text-center">
+<form action="/warranty" class="form-signin">
+    <h1 class="h5 mb-3 font-weight-normal" th:text="${#strings.concat('imei:',device.imei)}"></h1>
+    <h1 class="h5 mb-3 font-weight-normal" th:text="${#strings.concat('sn:',device.sn)}"></h1>
+    <h1 class="h5 mb-3 font-weight-normal" th:text="${#dates.format(device.registerTime,'注册日期：yyyy年MM月dd日')}"></h1>
+    <h1 class="h5 mb-3 font-weight-normal" th:text="${#dates.format(device.warrantyPeriod,'保修期限：yyyy年MM月dd日')}"></h1>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
+</form>
+<script src="/static/js/jquery.slim.min.js" type="javascript"></script>
+<script src="/static/js/bootstrap.bundle.js" type="javascript"></script>
 </body>
 </html>
