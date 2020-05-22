@@ -1,6 +1,6 @@
 {
   "Image": "${DOCKER_IMAGE_TO_RUN}",
-  "Hostname": "${DOCKER_CONTAINER_NAME}",
+  "Hostname": "${PROJECT_ARTIFACTID}",
   "ExposedPorts": {
     "8080/tcp": {}
   },
@@ -9,11 +9,14 @@
     "spring.datasource.druid.username=${DATASOURCE_DRUID_USERNAME}",
     "spring.datasource.druid.password=${DATASOURCE_DRUID_PASSWORD}"
   ],
-  "NetworkingConfig": {
-    "EndpointsConfig": {
-      "zkztch_network": {
-        "IPAMConfig": null
-      }
-    }
+  "HostConfig": {
+    "PortBindings": {
+      "8080/tcp": [
+        {
+          "HostPort": "8005"
+        }
+      ]
+    },
+    "NetworkMode": "zkztch_network"
   }
 }
