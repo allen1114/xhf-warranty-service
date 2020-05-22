@@ -15,14 +15,9 @@ spring:
     hibernate:
       ddl-auto: create
   datasource:
-    url: jdbc:h2:mem:h2test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    platform: h2
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-#  datasource:
-#    druid:
-#      enable: true
-#      url: jdbc:mysql://db.sit.zkztch.com:3301/xhf-warranty-service?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE
-#      username: root
-#      password: root.sit.zkztch
+    druid:
+      url: jdbc:h2:mem:h2test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+

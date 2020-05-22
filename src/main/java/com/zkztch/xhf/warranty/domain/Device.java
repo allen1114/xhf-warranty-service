@@ -2,6 +2,7 @@ package com.zkztch.xhf.warranty.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zkztch.xhf.warranty.Consts;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -24,13 +25,14 @@ public class Device {
     @Size(max = 16)
     private String imei;
 
-    @Column(unique = true, nullable = false, updatable = false)
+    @Column(name = "sn", unique = true, nullable = false, updatable = false)
     @NotNull
     @Size(max = 64)
     private String sn;
 
     @Column(name = "register_time", updatable = false, nullable = false)
     @CreationTimestamp
+    @ApiModelProperty(dataType = "java.lang.String")
     private Timestamp registerTime;
 
     @JsonIgnore

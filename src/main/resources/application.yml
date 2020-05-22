@@ -17,6 +17,4 @@ spring:
   datasource:
     druid:
       enable: true
-#      url: jdbc:mysql://db.sit.zkztch.com:3301/xhf-warranty-service?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE
-#      username: root
-#      password: root.sit.zkztch
+

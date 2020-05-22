@@ -1,6 +1,5 @@
 package com.zkztch.xhf.warranty.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zkztch.xhf.warranty.domain.Device;
 import com.zkztch.xhf.warranty.service.DeviceService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DeviceControllerTest {
 
-    private ObjectMapper objectMapper;
     private DeviceService deviceService;
     private DeviceController controller;
     private MockHttpServletRequestBuilder request;
@@ -33,7 +31,6 @@ public class DeviceControllerTest {
 
     @BeforeEach
     public void setup() {
-        objectMapper = new ObjectMapper();
         Timestamp registerTime = new Timestamp(System.currentTimeMillis());
         device = new Device();
         device.setId(1L);
@@ -46,18 +43,14 @@ public class DeviceControllerTest {
         mvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
-
     @Test
     public void returnDeviceWhenRegister() throws Exception {
         when(deviceService.register(any())).thenReturn(device);
 
-        Device d = new Device();
-        d.setImei(imei);
-        d.setSn(sn);
         request = MockMvcRequestBuilders
                 .post("/device/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(d))
+                .param("imei", imei)
+                .param("sn", sn)
                 .accept(MediaType.APPLICATION_JSON);
         mvc.perform(request).andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(device.getId()))
@@ -68,5 +61,39 @@ public class DeviceControllerTest {
 
         verify(deviceService).register(any());
     }
+
+    @Test
+    public void returnDeviceWhenFindByImei() throws Exception {
+        when(deviceService.findByImei(imei)).thenReturn(device);
+        when(deviceService.findBySn(any())).thenReturn(null);
+
+        request = MockMvcRequestBuilders
+                .get("/device/" + imei)
+                .accept(MediaType.APPLICATION_JSON);
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(device.getId()))
+                .andExpect(jsonPath("imei").value(device.getImei()))
+                .andExpect(jsonPath("sn").value(device.getSn()))
+                .andExpect(jsonPath("registerTime").exists())
+                .andReturn();
+        verify(deviceService).findByImei(imei);
+    }
+
+    @Test
+    public void returnDeviceWhenFindBySn() throws Exception {
+        when(deviceService.findByImei(any())).thenReturn(null);
+        when(deviceService.findBySn(sn)).thenReturn(device);
+        request = MockMvcRequestBuilders
+                .get("/device/" + sn)
+                .accept(MediaType.APPLICATION_JSON);
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(device.getId()))
+                .andExpect(jsonPath("imei").value(device.getImei()))
+                .andExpect(jsonPath("sn").value(device.getSn()))
+                .andExpect(jsonPath("registerTime").exists())
+                .andReturn();
+        verify(deviceService).findBySn(sn);
+    }
+
 
 }
