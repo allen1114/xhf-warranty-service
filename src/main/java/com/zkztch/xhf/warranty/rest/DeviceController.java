@@ -27,6 +27,7 @@ public class DeviceController {
     @GetMapping("/{p}")
     public Device getDevice(@PathVariable("p") String p) {
         Device device = deviceService.findByImei(p);
-        return device == null ? deviceService.findBySn(p) : device;
+        device = device == null ? deviceService.findBySn(p) : device;
+        return device == null ? new Device() : device;
     }
 }

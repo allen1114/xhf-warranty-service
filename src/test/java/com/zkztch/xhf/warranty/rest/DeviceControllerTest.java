@@ -95,5 +95,21 @@ public class DeviceControllerTest {
         verify(deviceService).findBySn(sn);
     }
 
+    @Test
+    public void returnEmptyWhenNotFound() throws Exception {
+        when(deviceService.findByImei(any())).thenReturn(null);
+        when(deviceService.findBySn(any())).thenReturn(null);
+        request = MockMvcRequestBuilders
+                .get("/device/" + sn)
+                .accept(MediaType.APPLICATION_JSON);
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("id").isEmpty())
+                .andExpect(jsonPath("imei").isEmpty())
+                .andExpect(jsonPath("sn").isEmpty())
+                .andExpect(jsonPath("registerTime").isEmpty())
+                .andReturn();
+        verify(deviceService).findByImei(sn);
+        verify(deviceService).findBySn(sn);
+    }
 
 }
