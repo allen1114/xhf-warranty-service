@@ -1,5 +1,6 @@
 package com.zkztch.xhf.warranty.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zkztch.xhf.warranty.domain.Device;
 import com.zkztch.xhf.warranty.service.DeviceService;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DeviceControllerTest {
 
+    private ObjectMapper objectMapper;
     private DeviceService deviceService;
     private DeviceController controller;
     private MockHttpServletRequestBuilder request;
@@ -37,7 +39,7 @@ public class DeviceControllerTest {
         device.setImei(imei);
         device.setSn(sn);
         device.setRegisterTime(registerTime);
-
+        objectMapper = new ObjectMapper();
         deviceService = Mockito.mock(DeviceService.class);
         controller = new DeviceController(deviceService);
         mvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -47,13 +49,15 @@ public class DeviceControllerTest {
     public void returnDeviceWhenRegister() throws Exception {
         when(deviceService.register(any())).thenReturn(device);
 
+        Device d = new Device();
+        d.setImei(imei);
+        d.setSn(sn);
         request = MockMvcRequestBuilders
-                .post("/device/register")
-                .param("imei", imei)
-                .param("sn", sn)
+                .post("/device")
+                .content(objectMapper.writeValueAsString(d))
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
         mvc.perform(request).andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(device.getId()))
                 .andExpect(jsonPath("imei").value(device.getImei()))
                 .andExpect(jsonPath("sn").value(device.getSn()))
                 .andExpect(jsonPath("registerTime").exists())
@@ -71,7 +75,6 @@ public class DeviceControllerTest {
                 .get("/device/" + imei)
                 .accept(MediaType.APPLICATION_JSON);
         mvc.perform(request).andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(device.getId()))
                 .andExpect(jsonPath("imei").value(device.getImei()))
                 .andExpect(jsonPath("sn").value(device.getSn()))
                 .andExpect(jsonPath("registerTime").exists())
@@ -87,7 +90,6 @@ public class DeviceControllerTest {
                 .get("/device/" + sn)
                 .accept(MediaType.APPLICATION_JSON);
         mvc.perform(request).andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(device.getId()))
                 .andExpect(jsonPath("imei").value(device.getImei()))
                 .andExpect(jsonPath("sn").value(device.getSn()))
                 .andExpect(jsonPath("registerTime").exists())
@@ -103,7 +105,6 @@ public class DeviceControllerTest {
                 .get("/device/" + sn)
                 .accept(MediaType.APPLICATION_JSON);
         mvc.perform(request).andExpect(status().isOk())
-                .andExpect(jsonPath("id").isEmpty())
                 .andExpect(jsonPath("imei").isEmpty())
                 .andExpect(jsonPath("sn").isEmpty())
                 .andExpect(jsonPath("registerTime").isEmpty())

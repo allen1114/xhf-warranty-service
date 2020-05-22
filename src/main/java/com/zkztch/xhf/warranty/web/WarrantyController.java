@@ -2,6 +2,9 @@ package com.zkztch.xhf.warranty.web;
 
 import com.zkztch.xhf.warranty.domain.Device;
 import com.zkztch.xhf.warranty.service.DeviceService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/warranty")
 @Controller
+@Api(tags = "设备保修信息查询页面")
 public class WarrantyController {
 
     private DeviceService deviceService;
@@ -20,7 +24,8 @@ public class WarrantyController {
     }
 
     @GetMapping
-    public String period(@RequestParam(value = "p", required = false) String p, Model model) {
+    @ApiOperation("设备保修信息查询页面")
+    public String period(@ApiParam(("imei 或 sn")) @RequestParam(value = "p", required = false) String p, Model model) {
 
         if (StringUtils.isBlank(p)) {
             return "warranty_input";
