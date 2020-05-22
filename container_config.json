@@ -13,7 +13,7 @@
     "PortBindings": {
       "8080/tcp": [
         {
-          "HostPort": "8005"
+          "HostPort": "${SERVICE_EXPORT_PORT}"
         }
       ]
     },

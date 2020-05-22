@@ -54,6 +54,7 @@ pipeline {
                             dockerPull image: "${DOCKER_IMAGE_TO_RUN}"
                             dockerCreate name: "${DOCKER_CONTAINER_NAME}", config: "${DOCKER_CONTAINER_CONFIG}"
                             dockerStart container: "${DOCKER_CONTAINER_NAME}", failWhenNotFound: true
+                            echo "service api doc: http://${SERVICE_DOMAIN}:${SERVICE_EXPORT_PORT}/swagger-ui.html"
                         }
                     }
                 }
