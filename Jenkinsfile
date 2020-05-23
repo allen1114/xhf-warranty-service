@@ -33,7 +33,8 @@ pipeline {
 
         PROJECT_GROUPID = "com.zkztch.xhf"
         PROJECT_ARTIFACTID = "xhf-warranty-service"
-        PROJECT_VERSION = "0.0.1-SNAPSHOT"
+//        PROJECT_VERSION = "0.0.1-SNAPSHOT"
+        PROJECT_VERSION = "1.0.0"
 
         GITLAB_URL = "http://gitlab.dev.zkztch.com"
         GITLAB_TOKEN = "iDwF4syhx15oTFsRyzKa"
