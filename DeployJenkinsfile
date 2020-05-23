@@ -17,6 +17,8 @@ pipeline {
         DOCKER_CERT_PATH = "${BRANCH_NAME}_certs"
 
         DOCKER_CONTAINER_CONFIG = "container_config.json"
+
+        DOCKER_NGINX_CONTAINER = "nginx"
     }
 
     stages {
@@ -43,6 +45,8 @@ pipeline {
 
                         def tagList = dockerRepoListTags repository: "${DOCKER_IMAGE_NAME}"
                         def tagToRun = input message: '选择要部署的版本', parameters: [choice(choices: tagList, description: '选择要部署的版本', name: 'TAG_TO_RUN')]
+
+                        //DOCKER_REPO_LOCAL_HOST 使用localhost从本地拉取镜像，解决阿里云经外网限速问题
                         withEnv(["DOCKER_IMAGE_TO_RUN=" + "${DOCKER_REPO_LOCAL_HOST}/${DOCKER_IMAGE_NAME}:" + tagToRun]) {
                             def state = dockerState container: "${DOCKER_CONTAINER_NAME}"
                             if (state == "running") {
@@ -54,6 +58,16 @@ pipeline {
                             dockerPull image: "${DOCKER_IMAGE_TO_RUN}", registryUrl: "${DOCKER_REPO_LOCAL_HOST}"
                             dockerCreate name: "${DOCKER_CONTAINER_NAME}", config: "${DOCKER_CONTAINER_CONFIG}"
                             dockerStart container: "${DOCKER_CONTAINER_NAME}", failWhenNotFound: true
+
+                            // 重启nginx容器解决反向代理问题
+                            def nginxState = dockerState container: "${DOCKER_NGINX_CONTAINER}"
+                            if (nginxState == "running") {
+                                dockerStop container: "${DOCKER_NGINX_CONTAINER}"
+                            }
+                            if (nginxState != null) {
+                                dockerStart container: "${DOCKER_NGINX_CONTAINER}"
+                            }
+
                             echo "service api doc: http://${SERVICE_DOMAIN}/swagger-ui.html"
                         }
                     }
