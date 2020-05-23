@@ -21,7 +21,6 @@ public class WarrantyServiceApplication {
         SpringApplication.run(WarrantyServiceApplication.class, args);
     }
 
-
     @Bean
     public DeviceService deviceService(DeviceRepository deviceRepository) {
         return new DeviceServiceImpl(deviceRepository);

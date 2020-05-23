@@ -12,8 +12,7 @@
 <form action="/warranty" class="form-signin">
     <h1 class="h5 mb-3 font-weight-normal" th:text="${#strings.concat('imei:',device.imei)}"></h1>
     <h1 class="h5 mb-3 font-weight-normal" th:text="${#strings.concat('sn:',device.sn)}"></h1>
-    <h1 class="h5 mb-3 font-weight-normal" th:text="${#dates.format(device.registerTime,'注册日期：yyyy年MM月dd日')}"></h1>
-    <h1 class="h5 mb-3 font-weight-normal" th:text="${#dates.format(device.warrantyPeriod,'保修期限：yyyy年MM月dd日')}"></h1>
+    <h1 class="h5 mb-3 font-weight-normal" th:text="${#dates.format(device.registerTime,'激活日期：yyyy年MM月dd日')}"></h1>
     <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
 </form>
 <script src="/static/js/jquery.slim.min.js" type="javascript"></script>
